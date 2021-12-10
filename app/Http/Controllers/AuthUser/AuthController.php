@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\AuthAdmin;
+namespace App\Http\Controllers\AuthUser;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Admin;
+use App\User;
 use Hash;
 use Auth;
 class AuthController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
     public function register()
     {
 
-      return view('adminAuth.register');
+      return view('userAuth.register');
     }
 
     public function storeUser(Request $request)
@@ -25,15 +29,15 @@ class AuthController extends Controller
             'password_confirmation' => 'required',
         ]);
 
-        $admin=Admin::create([
+        $user=User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
         $credentials = $request->only('email', 'password');
 
-         if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended('admin/home');
+         if (Auth::guard('user')->attempt($credentials)) {
+            return redirect()->intended('user/home');
         }
 
     }
@@ -42,7 +46,7 @@ class AuthController extends Controller
     {
 
 
-      return view('adminAuth.login');
+      return view('userAuth.login');
     }
 
     public function authenticate(Request $request)
@@ -53,22 +57,21 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended('admin/home');
+        if (Auth::guard('user')->attempt($credentials)) {
+            return redirect()->intended('user/home');
         }
 
-        return redirect()->route('admin.login')->with('error', 'Oppes! You have entered invalid credentials');
+        return redirect()->route('user.login')->with('error', 'Oppes! You have entered invalid credentials');
     }
 
     public function logout() {
-      Auth::guard('admin')->logout();
+      Auth::guard('user')->logout();
 
-      return redirect()->route('admin.login');
+      return redirect()->route('user.login');
     }
 
     public function home()
     {
-      return view('admin_home');
+      return view('user_home');
     }
-
 }

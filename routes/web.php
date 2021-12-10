@@ -17,6 +17,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 //admin Auth
+Route::group(['prefix'=>'user','as'=>'user.'], function(){
+
+    Route::get('/register', 'AuthUser\AuthController@register')->name('register');
+    Route::post('/register', 'AuthUser\AuthController@storeUser');
+    Route::get('/login', 'AuthUser\AuthController@login')->name('login');
+    Route::post('/login', 'AuthUser\AuthController@authenticate');
+    Route::get('logout', 'AuthUser\AuthController@logout')->name('logout');
+
+    Route::get('/home', 'AuthUser\AuthController@home')->name('home');
+});
+
+
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
 
     Route::get('/register', 'AuthAdmin\AuthController@register')->name('register');
