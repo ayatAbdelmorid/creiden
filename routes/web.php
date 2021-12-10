@@ -16,3 +16,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+//admin Auth
+Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
+
+    Route::get('/register', 'AuthAdmin\AuthController@register')->name('register');
+    Route::post('/register', 'AuthAdmin\AuthController@storeUser');
+    Route::get('/login', 'AuthAdmin\AuthController@login')->name('login');
+    Route::post('/login', 'AuthAdmin\AuthController@authenticate');
+    Route::get('logout', 'AuthAdmin\AuthController@logout')->name('logout');
+
+    Route::get('/home', 'AuthAdmin\AuthController@home')->name('home');
+});
