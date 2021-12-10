@@ -27,8 +27,8 @@
                     </div>
                     <div class="btn-group-vertical" role="group" aria-label="seconed group">
 
-                        <a type="button" class="btn btn-primary btn-lg mb-5">Create Storage</a>
-                        <a type="button" class="btn btn-secondary btn-lg">All Storages</a>
+                        <a type="button" class="btn btn-primary btn-lg mb-5" href="{{route('storages.create')}}">Create Storage</a>
+                        <a type="button" class="btn btn-secondary btn-lg"  href="{{route('storages.index')}}">All Storages</a>
                     </div>
 
                 </div>

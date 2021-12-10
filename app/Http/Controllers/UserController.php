@@ -77,7 +77,8 @@ class UserController extends Controller
         $data=[];
         $data['user']=$user;
 
-        return view('user.show', $data);    }
+        return view('user.show', $data);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -104,7 +105,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return   redirect()->route('users.index')->with('success', 'user created successfully');
+        return   redirect()->route('users.index')->with('success', 'user deleted successfully');
 
     }
 }

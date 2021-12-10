@@ -42,4 +42,6 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
 
     Route::get('/home', 'AuthAdmin\AuthController@home')->name('home');
 });
-
+//storage Crud
+Route::resource('storages', 'StorageController');
+Route::get('/storage/{storage}/delete', 'StorageController@destroy')->name('storage.destroy');
