@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,9 +25,13 @@ Route::group(['prefix'=>'user','as'=>'user.'], function(){
     Route::get('logout', 'AuthUser\AuthController@logout')->name('logout');
 
     Route::get('/home', 'AuthUser\AuthController@home')->name('home');
+    Route::get('/user/{user}/delete', 'UserController@destroy')->name('destroy');
+
 });
+//user Crud
+Route::resource('users', 'UserController');
 
-
+//admin Auth
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
 
     Route::get('/register', 'AuthAdmin\AuthController@register')->name('register');
@@ -39,3 +42,4 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
 
     Route::get('/home', 'AuthAdmin\AuthController@home')->name('home');
 });
+

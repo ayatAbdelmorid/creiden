@@ -15,6 +15,22 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                </div>
+                <div class="card-body">
+
+                <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group-vertical " role="group" aria-label="First group">
+
+                        <a type="button" class="btn btn-primary btn-lg mb-5" href="{{route('users.create')}}">Create User</a>
+                        <a type="button" class="btn btn-secondary btn-lg" href="{{route('users.index')}}">All Users</a>
+                    </div>
+                    <div class="btn-group-vertical" role="group" aria-label="seconed group">
+
+                        <a type="button" class="btn btn-primary btn-lg mb-5">Create Storage</a>
+                        <a type="button" class="btn btn-secondary btn-lg">All Storages</a>
+                    </div>
+
                 </div>
             </div>
         </div>
