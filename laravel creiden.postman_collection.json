@@ -1,0 +1,865 @@
+{
+	"info": {
+		"_postman_id": "ba387f19-fb4f-4875-8fdb-d0ae351c8cb4",
+		"name": "laravel creiden",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user auth",
+			"item": [
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "user1",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "user88s888@test.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "storage_name",
+									"value": "user1 storage",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/userApi/register",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"userApi",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user3@test.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/userApi/login",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"userApi",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "e8d4459fb208e2829aff35967e8a5b824acfe62cc2ab46d673c8359112964d93",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/userApi/logout",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"userApi",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin auth",
+			"item": [
+				{
+					"name": "register admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "admin2",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "admin3@test.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/register",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin3@test.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/login",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "028c24fc4af0689aeee29277e5adc470fe1898654259409486a3e4c63b599e14",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/logout",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CRUD User",
+			"item": [
+				{
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "adecdd1dc1acbf8b3005e5e6a56943a3c16973f82b0ead94c9893a8e0b594df9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test220@test.com",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "30",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/users",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"users"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "30",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test280@test.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "storage_name",
+									"value": "test20 storage ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/users",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "89746b87a86d514e4b1ce9efcf88d18311bcbc59d888b34687a4e73846b5df9a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/users",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "28e776713dc19840ed913c80eec00b41bc7eda28c6068abc5f761b24f8b91977",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/users/30",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"users",
+								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/users/29/delete",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"users",
+								"29",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CRUD storage",
+			"item": [
+				{
+					"name": "index storages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/storages",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"storages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read storage",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/storages/7",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"storages",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create storage (make sure user has no storage )",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test2020",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "22",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/storages",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"storages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update storage",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "fssdfdsf",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "22",
+									"type": "text"
+								},
+								{
+									"key": "storageId",
+									"value": "28",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/storages",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"storages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete storage (its empty storage )",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/adminApi/storages/9/delete",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"adminApi",
+								"storages",
+								"9",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CRUD item",
+			"item": [
+				{
+					"name": "index items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/1/items",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"1",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/1/items/2",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"1",
+								"items",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test2020",
+									"type": "text"
+								},
+								{
+									"key": "itemId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/1/items",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"1",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "fssdfdsfgfdhfdsgfs",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://creiden.pro/api/1/items/1",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"1",
+								"items",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f682ec9f539fc7fe12c72823081dca2b870e40391141fa2c5aa0a5d0ace951e1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://creiden.pro/api/1/items/1/delete",
+							"protocol": "http",
+							"host": [
+								"creiden",
+								"pro"
+							],
+							"path": [
+								"api",
+								"1",
+								"items",
+								"1",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
