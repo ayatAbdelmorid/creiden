@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     protected function guard()
     {
-        return Auth::guard('admin-api');
+        return Auth::guard('adminApi');
     }
 
     public function storeUser(Request $request)
@@ -36,8 +36,8 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        Auth::guard('admin-api')->attempt($credentials);
-        $admin= Auth::guard('admin-api')->user();
+        Auth::guard('adminApi')->attempt($credentials);
+        $admin= Auth::guard('adminApi')->user();
         
         if($request->wantsJson() || strpos($request->getRequestUri(), 'api')&& $admin){
             
@@ -69,8 +69,8 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        Auth::guard('admin-api')->attempt($credentials);
-        $admin= Auth::guard('admin-api')->user();
+        Auth::guard('adminApi')->attempt($credentials);
+        $admin= Auth::guard('adminApi')->user();
 
         if($request->wantsJson() || strpos($request->getRequestUri(), 'api')&& $admin){
             $admin->api_token = hash('sha256',Str::random(80));

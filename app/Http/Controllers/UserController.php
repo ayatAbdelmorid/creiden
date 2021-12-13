@@ -7,6 +7,8 @@ use App\Storage;
 use Illuminate\Http\Request;
 use Hash;
 use Auth;
+use Validator;
+
 class UserController extends Controller
 {
     /**
@@ -16,22 +18,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data=[];
-        $data['users']=User::all();
+       $users=User::all();
+        return response()->json([
+            'users'=>$users
 
-        return view('user.index',$data);
+        ],200);
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('user.edit');
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -41,17 +35,39 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData =  $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$request->userId,
             'userId' => 'nullable|integer',
             'password' => 'required_without:userId|nullable|string|min:8|confirmed',
             'password_confirmation' => 'required_with:password|nullable',
-            'storage_name' => 'required|string|max:255',
+            'storage_name' => 'required_without:userId|nullable|string|max:255',
 
         ]);
+        $validation_messages=$validator->messages()->get('*');
+        if(isset($validation_messages['name'])||isset($validation_messages['password'])){
+            return response()->json(['error'=>'Incorrect username or password.'], 401);
+
+        }
+        if(isset($validation_messages['email'])){
+            return response()->json(['error'=>'Incorrect email.'], 401);
+
+        }
+          if(isset($validation_messages['password_confirmation'])){
+            return response()->json(['error'=>'password_confirmation not matched.'], 401);
+
+        }
+        if(isset($validation_messages['storage_name'])){
+            return response()->json(['error'=>'storage name required.'], 401);
+
+        }
+        $validatedData=$validator->valid();
+
         if( isset($request->userId)){
             $user=User::findOrFail($request->userId);
+            if(!$user){
+                return response()->json(['error'=>'incorrect userId.'], 401);
+            }
             $user->name=$validatedData['name'];
             $user->email=$validatedData['email'];
             $user->password=isset($validatedData['password'])?$validatedData['password']:$user->password;
@@ -69,9 +85,16 @@ class UserController extends Controller
             ]);
 
         }
+        if($user){
+            return response()->json([
+                'user'=>$user,
+                'storage'=>$user->storage
 
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
 
-      return   redirect()->route('users.index')->with('success', 'user created successfully');
+        
     }
 
     /**
@@ -82,26 +105,20 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $data=[];
-        $data['user']=$user;
+       
 
-        return view('user.show', $data);
-    }
+        if($user){
+            return response()->json([
+                'user'=>$user,
+                'storage'=>$user->storage
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        $data=[];
-        $data['user']=$user;
-
-        return view('user.edit', $data);
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
 
     }
+
+    
 
 
     /**
@@ -112,9 +129,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->storage->delete();
-        $user->delete();
-        return   redirect()->route('users.index')->with('success', 'user deleted successfully');
+        if(isset( $user)){
+            $user->storage->delete();
+            $user->delete();
+            return response()->json([
+                'status'=>"success",
+            ],200);
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
 
     }
 }

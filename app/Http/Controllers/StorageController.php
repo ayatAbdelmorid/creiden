@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Storage;
 use App\User;
 use Illuminate\Http\Request;
+use Validator;
 
 class StorageController extends Controller
 {
@@ -15,23 +16,17 @@ class StorageController extends Controller
      */
     public function index()
     {
-        $data=[];
-        $data['storages']=Storage::all();
+        $storages=Storage::all();
 
-        return view('storage.index',$data);
-    }
+        if($storages){
+            return response()->json([
+                'storages'=>$storages
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $data=[];
-        $data['users']=User::all();
+    
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
 
-        return view('storage.edit',$data);
 
     }
 
@@ -43,14 +38,29 @@ class StorageController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData =  $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'user_id' => 'required|integer|unique:storages,user_id,'.$request->storageId.',id,deleted_at,NULL',
             'storageId' => 'nullable|integer',
 
         ]);
+        $validation_messages=$validator->messages()->get('*');
+        if(isset($validation_messages['name'])){
+            return response()->json(['error'=>'storage name required.'], 401);
+
+        }
+        if(isset($validation_messages['user_id'])){
+            return response()->json(['error'=>'somthing with user maybe has another storage '], 401);
+
+        }
+        $validatedData=$validator->valid();
+
+
         if( isset($request->storageId)){
             $storage=Storage::findOrFail($request->storageId);
+            if(!$storage){
+                return response()->json(['error'=>'incorrect storageId.'], 401);
+            }
             $storage->name=$validatedData['name'];
             $storage->user_id=$validatedData['user_id'];
             $storage->save();
@@ -63,8 +73,15 @@ class StorageController extends Controller
         }
 
 
-      return   redirect()->route('storages.index')->with('success', 'storage created successfully');
-    }
+        if($storage){
+            return response()->json([
+                'storage'=>$storage,
+                'user'=>$storage->user
+
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
+        }
 
     /**
      * Display the specified resource.
@@ -74,10 +91,14 @@ class StorageController extends Controller
      */
     public function show(Storage $storage)
     {
-        $data=[];
-        $data['storage']=$storage;
 
-        return view('storage.show', $data);
+        if($storage){
+            return response()->json([
+                'storage'=>$storage
+    
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
     }
 
     /**
@@ -88,11 +109,18 @@ class StorageController extends Controller
      */
     public function edit(Storage $storage)
     {
-        $data=[];
-        $data['storage']=$storage;
-        $data['users']=User::all();
+        $storage=$storage;
+        $users=User::all();
 
-        return view('storage.edit', $data);
+        if($storage){
+            return response()->json([
+                'users'=>$user,
+                'storage'=>$storage
+
+    
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
 
     }
 
@@ -104,10 +132,20 @@ class StorageController extends Controller
      */
     public function destroy(Storage $storage)
     {
-        foreach( $storage->items as $item){
-            $item->delete();
-        }
+
         // $storage->delete();
-        return   redirect()->route('storages.index')->with('success', 'storage deleted successfully');
+        if($storage){
+            if(count($storage->items)>0 ){
+                foreach( $storage->items as $item){
+                    $item->delete();
+                }
+            }
+            return response()->json([
+                'status'=>"success",
+            ],200);
+        }
+       
+        
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
     }
 }

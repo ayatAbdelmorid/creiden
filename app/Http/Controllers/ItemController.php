@@ -6,23 +6,33 @@ use App\Item;
 use App\Storage;
 use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class ItemController extends Controller
 {
-
-
-    /**
-     * Show the form for creating a new resource.
+   /**
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Storage $storage)
+    public function index($storage_id)
     {
-        $data=[];
-        $data['storage']=$storage;
 
-        return view('item.edit',$data);
+        $items=Item::where('storage_id',$storage_id)->get();
+
+        if($items){
+            return response()->json([
+                'items'=>$items
+
+    
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
+
+
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -33,12 +43,27 @@ class ItemController extends Controller
     public function store(Request $request,$storage_id)
     {
         $request->request->add(['storage_id' => $storage_id]);
-        $validatedData =  $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'storage_id' => 'required|integer|exists:storages,id',
         ]);
+        $validation_messages=$validator->messages()->get('*');
+        if(isset($validation_messages['name'])){
+            return response()->json(['error'=>'storage name required.'], 401);
+
+        }
+        if(isset($validation_messages['storage_id'])||$storage_id!=$request->storage_id){
+            return response()->json(['error'=>'wrong storage_id'], 401);
+
+        }
+        $validatedData=$validator->valid();
+
+
         if( isset($request->itemId)){
-            $item=Item::findOrFail($request->itemId);
+            $item=Item::where('storage_id',$storage_id)->where('id',$request->itemId)->first();
+            if(!$item){
+                return response()->json(['error'=>'incorrect storageId.'], 401);
+            }
             $item->name=$validatedData['name'];
             $item->save();
         }else{
@@ -48,12 +73,16 @@ class ItemController extends Controller
                 'storage_id' => $validatedData['storage_id'],
             ]);
         }
-        if(Auth::guard('admin')->check()){
-            return   redirect()->route('storages.edit',['storage'=>$storage_id])->with('success', 'item created successfully');
-
+      
+        if($item){
+            return response()->json([
+                'item'=>$item,
+    
+            ],200); 
         }
-        return   redirect()->route('user.home')->with('success', 'item created successfully');
-    }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
+           
+     }
 
     /**
      * Display the specified resource.
@@ -63,10 +92,19 @@ class ItemController extends Controller
      */
     public function show($storage_id,Item $item)
     {
-        $data=[];
-        $data['item']=$item;
+        if( $item->storage_id!=$storage_id){
+            return response()->json(['error'=>'item not related to storage sent'], 401);
 
-        return view('item.show', $data);
+        }
+ 
+
+        if($item){
+            return response()->json([
+                'item'=>$item
+    
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
     }
 
     /**
@@ -77,11 +115,16 @@ class ItemController extends Controller
      */
     public function edit(Storage $storage,Item $item)
     {
-        $data=[];
-        $data['storage']=$storage;
-        $data['item']=$item;
 
-        return view('item.edit',$data);
+        if($item){
+            return response()->json([
+                'item'=>$item,
+                'storage'=>$storage
+
+    
+            ],200); 
+        }
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
     }
 
 
@@ -93,12 +136,16 @@ class ItemController extends Controller
      */
     public function destroy($storage,Item $item)
     {
-        $item->delete();
         
-        if(Auth::guard('admin')->check()){
-            return   redirect()->route('storages.edit',['storage'=>$storage])->with('success', 'item created successfully');
+        if($item){
+            
+            $item->delete();
 
+            return response()->json([
+                'status'=>"success",
+            ],200);
         }
-        return   redirect()->route('user.home')->with('success', 'item created successfully');
-    }
+       
+        
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);    }
 }

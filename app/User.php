@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
-    protected $guard = 'user-api';
+    protected $guard = 'userApi';
 
     /**
      * The attributes that are mass assignable.

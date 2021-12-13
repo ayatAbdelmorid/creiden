@@ -16,7 +16,7 @@ class AuthController extends Controller
 {
         protected function guard()
     {
-        return Auth::guard('user-api');
+        return Auth::guard('userApi');
     }
     public function storeUser(Request $request)
     {
@@ -50,8 +50,8 @@ class AuthController extends Controller
             'user_id' =>  $user->id,
         ]);
         $credentials = $request->only('email', 'password');
-            Auth::guard('user-api')->attempt($credentials);
-            $user= Auth::guard('user-api')->user();
+            Auth::guard('userApi')->attempt($credentials);
+            $user= Auth::guard('userApi')->user();
             if($request->wantsJson() || strpos($request->getRequestUri(), 'api')&&$user){
                 $success['token'] =   $user->api_token ;
                 $success['user'] =  $user;
@@ -77,8 +77,8 @@ class AuthController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
-        Auth::guard('user-api')->attempt($credentials);
-        $user= Auth::guard('user-api')->user();
+        Auth::guard('userApi')->attempt($credentials);
+        $user= Auth::guard('userApi')->user();
 
         if($request->wantsJson() || strpos($request->getRequestUri(), 'api')&& $user){
 

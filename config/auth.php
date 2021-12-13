@@ -48,13 +48,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'user-api' => [
+        'userApi' => [
             'driver' => 'session',
             'provider' => 'users',
             'hash' => true,
 
         ],
-        'admin-api' => [
+        'adminApi' => [
             'driver' => 'session',
             'provider' => 'admins',
             'hash' => true,

@@ -14,7 +14,7 @@ class Admin extends Model implements Authenticatable
     use Notifiable;
     use AuthenticableTrait;
 
-        protected $guard = 'admin-api';
+        protected $guard = 'adminApi';
 
         protected $fillable = [
             'name', 'email', 'password','api_token',
