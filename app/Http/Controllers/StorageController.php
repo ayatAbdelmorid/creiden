@@ -107,7 +107,7 @@ class StorageController extends Controller
         foreach( $storage->items as $item){
             $item->delete();
         }
-        $storage->delete();
+        // $storage->delete();
         return   redirect()->route('storages.index')->with('success', 'storage deleted successfully');
     }
 }

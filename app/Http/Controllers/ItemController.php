@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Item;
 use App\Storage;
+use Auth;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -47,8 +48,11 @@ class ItemController extends Controller
                 'storage_id' => $validatedData['storage_id'],
             ]);
         }
-        return   redirect()->route('storages.edit',['storage'=>$storage_id])->with('success', 'item created successfully');
+        if(Auth::guard('admin')->check()){
+            return   redirect()->route('storages.edit',['storage'=>$storage_id])->with('success', 'item created successfully');
 
+        }
+        return   redirect()->route('user.home')->with('success', 'item created successfully');
     }
 
     /**
@@ -90,6 +94,11 @@ class ItemController extends Controller
     public function destroy($storage,Item $item)
     {
         $item->delete();
-        return   redirect()->route('storages.edit',['storage'=>$storage])->with('success', 'item created successfully');
+        
+        if(Auth::guard('admin')->check()){
+            return   redirect()->route('storages.edit',['storage'=>$storage])->with('success', 'item created successfully');
+
+        }
+        return   redirect()->route('user.home')->with('success', 'item created successfully');
     }
 }

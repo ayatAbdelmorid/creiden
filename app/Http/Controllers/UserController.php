@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Storage;
 use Illuminate\Http\Request;
 use Hash;
 use Auth;
@@ -46,6 +47,8 @@ class UserController extends Controller
             'userId' => 'nullable|integer',
             'password' => 'required_without:userId|nullable|string|min:8|confirmed',
             'password_confirmation' => 'required_with:password|nullable',
+            'storage_name' => 'required|string|max:255',
+
         ]);
         if( isset($request->userId)){
             $user=User::findOrFail($request->userId);
@@ -60,6 +63,11 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
+            $storage=Storage::create([
+                'name' => $request->storage_name,
+                'user_id' =>  $user->id,
+            ]);
+
         }
 
 

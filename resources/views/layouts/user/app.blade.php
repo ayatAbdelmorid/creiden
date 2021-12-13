@@ -49,6 +49,11 @@
                                     <a class="nav-link" href="{{ route('user.register') }}">{{ __('Register') }}</a>
                                 </li>
                         @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('user.home') }}">
+                                {{ __('home') }}
+                            </a>
+                        </li>
                         <li class="nav-item ">
                             <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::guard('user')->user()->name }} <span class="caret"></span>
