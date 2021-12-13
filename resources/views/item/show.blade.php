@@ -6,8 +6,10 @@
                 <div class="card" >
                     <div class="card-header">Storage Info</div>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">storage: {{$storage->name}}</li>
-                                    <li class="list-group-item">user: {{$storage->user->name}}</li>
+                                    <li class="list-group-item">item : {{$item->name}}</li>
+                                    <li class="list-group-item">storage : {{$item->storage->name}}</li>
+                                    <li class="list-group-item">user : {{$item->storage->user->name}}</li>
+
                                 </ul>
                 </div>
             </div>

@@ -18,4 +18,8 @@ class Storage extends Model
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
 }

@@ -45,7 +45,7 @@ class StorageController extends Controller
     {
         $validatedData =  $request->validate([
             'name' => 'required|string|max:255',
-            'user_id' => 'required|integer|unique:storages,user_id,'.$request->storageId,
+            'user_id' => 'required|integer|unique:storages,user_id,'.$request->storageId.',id,deleted_at,NULL',
             'storageId' => 'nullable|integer',
 
         ]);
@@ -56,7 +56,7 @@ class StorageController extends Controller
             $storage->save();
         }else{
 
-            $user=Storage::create([
+            $storage=Storage::create([
                 'name' => $validatedData['name'],
                 'user_id' => $validatedData['user_id'],
             ]);
@@ -97,18 +97,6 @@ class StorageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Storage  $storage
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Storage $storage)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Storage  $storage
@@ -116,6 +104,9 @@ class StorageController extends Controller
      */
     public function destroy(Storage $storage)
     {
+        foreach( $storage->items as $item){
+            $item->delete();
+        }
         $storage->delete();
         return   redirect()->route('storages.index')->with('success', 'storage deleted successfully');
     }

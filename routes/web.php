@@ -29,7 +29,7 @@ Route::group(['prefix'=>'user','as'=>'user.'], function(){
 
 });
 //user Crud
-Route::resource('users', 'UserController');
+Route::resource('users', 'UserController')->except(['destroy']);
 
 //admin Auth
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
@@ -43,7 +43,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::get('/home', 'AuthAdmin\AuthController@home')->name('home');
 });
 //storage Crud
-Route::resource('storages', 'StorageController');
+Route::resource('storages', 'StorageController')->except(['destroy']);
 Route::get('/storage/{storage}/delete', 'StorageController@destroy')->name('storage.destroy');
 
 Route::group(['prefix'=>'wordpress','as'=>'wordpress.'], function(){
@@ -57,3 +57,5 @@ Route::group(['prefix'=>'wordpress','as'=>'wordpress.'], function(){
     Route::post('/store_post/{post?}', 'WordpressController@store')->name('store_post');
 
 });
+Route::resource('{storage}/items', 'ItemController')->except(['destroy']);
+Route::get('/{storage}/items/{item}/delete', 'ItemController@destroy')->name('item.destroy');
