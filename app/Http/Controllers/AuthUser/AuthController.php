@@ -9,21 +9,18 @@ use App\User;
 use App\Storage;
 use Hash;
 use Auth;
+use Validator;
+use Illuminate\Support\Str;
+
 class AuthController extends Controller
 {
-    public function __construct()
+        protected function guard()
     {
-        $this->middleware('guest');
+        return Auth::guard('user-api');
     }
-    public function register()
-    {
-
-      return view('userAuth.register');
-    }
-
     public function storeUser(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
@@ -31,56 +28,89 @@ class AuthController extends Controller
             'storage_name' => 'required|string|max:255',
 
         ]);
+        $validation_messages=$validator->messages()->get('*');
+        if(isset($validation_messages['name'])||isset($validation_messages['password'])){
+            return response()->json(['error'=>'Incorrect username or password.'], 401);
+
+        }
+        if(isset($validation_messages['email'])){
+            return response()->json(['error'=>'Incorrect email.'], 401);
+
+        }
 
         $user=User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'api_token' =>  hash('sha256',Str::random(80)),
+
         ]);
         $storage=Storage::create([
             'name' => $request->storage_name,
             'user_id' =>  $user->id,
         ]);
-
         $credentials = $request->only('email', 'password');
+            Auth::guard('user-api')->attempt($credentials);
+            $user= Auth::guard('user-api')->user();
+            if($request->wantsJson() || strpos($request->getRequestUri(), 'api')&&$user){
+                $success['token'] =   $user->api_token ;
+                $success['user'] =  $user;
 
-         if (Auth::guard('user')->attempt($credentials)) {
-            return redirect()->intended('user/home');
-        }
+                return response()->json(['success'=>$success], 200);
 
-    }
+            }
 
-    public function login()
-    {
+            return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
 
 
-      return view('userAuth.login');
     }
 
     public function authenticate(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+        if(isset($validation_messages['email'])||isset($validation_messages['password'])){
+            return response()->json(['error'=>'Incorrect username or password.'], 401);
 
-        $credentials = $request->only('email', 'password');
-        if (Auth::guard('user')->attempt($credentials)) {
-            return redirect()->intended('user/home');
         }
 
-        return redirect()->route('user.login')->with('error', 'Oppes! You have entered invalid credentials');
+        $credentials = $request->only('email', 'password');
+        Auth::guard('user-api')->attempt($credentials);
+        $user= Auth::guard('user-api')->user();
+
+        if($request->wantsJson() || strpos($request->getRequestUri(), 'api')&& $user){
+
+            $user->api_token = hash('sha256',Str::random(80));
+            $user->save();
+
+            $success['token'] =   $user->api_token;
+            $success['user'] =  $user;   
+
+            return response()->json(['success'=>$success], 200);
+
+        }
+      
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
     }
 
-    public function logout() {
-      Auth::guard('user')->logout();
+    public function logout(Request $request) {
 
-      return redirect()->route('user.login');
+        $user = User::where('api_token', request()->bearerToken())->first();
+
+        if(    $user ){
+            unset($user->api_token);
+            $user->save();
+            
+            return response()->json([
+                'message' => 'Successfully logged out'
+            ]);
+        }
+
+        return response()->json(['error'=>'Something went wrong. Please try again later.'], 500);
+
     }
 
-    public function home()
-    {
-        $storage= Auth::guard('user')->user()->storage;
-        return view('user_home',['storage'=>$storage]);
-    }
+
 }

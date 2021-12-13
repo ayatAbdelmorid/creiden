@@ -40,13 +40,6 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-            'hash' => false,
-        ],
-
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
@@ -55,6 +48,19 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'user-api' => [
+            'driver' => 'session',
+            'provider' => 'users',
+            'hash' => true,
+
+        ],
+        'admin-api' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+            'hash' => true,
+
+        ],
+
 
     ],
 
