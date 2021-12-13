@@ -30,6 +30,11 @@
                         <a type="button" class="btn btn-primary btn-lg mb-5" href="{{route('storages.create')}}">Create Storage</a>
                         <a type="button" class="btn btn-secondary btn-lg"  href="{{route('storages.index')}}">All Storages</a>
                     </div>
+                    <div class="btn-group-vertical " role="group" aria-label="third group">
+
+                        <a type="button" class="btn btn-primary btn-lg mb-5" href="{{route('wordpress.edit_post')}}">Create WP post</a>
+                        <a type="button" class="btn btn-secondary btn-lg" href="{{route('wordpress.index_posts')}}">All  WP post</a>
+                    </div>
 
                 </div>
             </div>

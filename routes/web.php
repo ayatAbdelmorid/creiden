@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 //admin Auth
 Route::group(['prefix'=>'user','as'=>'user.'], function(){
 
@@ -45,3 +45,15 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
 //storage Crud
 Route::resource('storages', 'StorageController');
 Route::get('/storage/{storage}/delete', 'StorageController@destroy')->name('storage.destroy');
+
+Route::group(['prefix'=>'wordpress','as'=>'wordpress.'], function(){
+
+    Route::get('/login', 'WordpressController@wordpressLogIn')->name('login');
+    // Route::get('/create_post', 'WordpressController@createPost')->name('createPost');
+    Route::get('/index_posts', 'WordpressController@index')->name('index_posts');
+    Route::get('/{post}/show_post', 'WordpressController@show')->name('show_post');
+    Route::get('/{post}/delete', 'WordpressController@destroy')->name('destroy_post');
+    Route::get('/edit_post/{post?}', 'WordpressController@edit')->name('edit_post');
+    Route::post('/store_post/{post?}', 'WordpressController@store')->name('store_post');
+
+});
